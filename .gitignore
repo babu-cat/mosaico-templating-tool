@@ -1,0 +1,8 @@
+config/*
+!config/sample
+
+dist/*
+
+templates/*
+!templates/sample.tpl
+
