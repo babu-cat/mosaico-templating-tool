@@ -1,16 +1,16 @@
-# mosaico-templating-tool
+# Mosaico Templating Tool
 
 This script is used in order to automate the customization of some language translations and style variables of a template. Let's take a look at an example: 
 In case of having a HTML mailing template and wanting to translate it into 3 different languages plus change some colors for each result file. With this script we just need to create 1 template file, the php configuration files with the language strings and the style settings and run the script. A clear example can be seen in the configuration files (languages and styles) in the '/config' directory, and a template sample in the '/templates' directory.
 
 Let's see how it works:
-
+___
 ## 1. Initial configuration
-___
-First of all, if there's not a '/vendor' directory in the project folder you should run `$ composer require twig/twig` from the command line in the project folder. Make sure that a file called 'autoload.php' exists inside the '/vendor' directory.
 
-## 2. Creating the template structure
+First of all, if there's not a '/vendor' directory in the project folder you should run `$ composer require twig/twig` from the command line in the project folder. Make sure that a file called 'autoload.php' exists inside the '/vendor' directory.
 ___
+## 2. Creating the template structure
+
 If you have successfully cloned this repository in the project folder, look for a folder called 'templates'. If not, you can just create it. Inside, there must be a file named 'sample.tpl', which is a short sample of showing how to use twig variables. All the twig expressions have this appearance `{{ example_variable }}`. This variables will be replaced with the chosen strings when the file gets evaluated, like in the following structure: 
 ```
     <div style="color: white; background-color: {{ brand_color }}">
@@ -25,9 +25,9 @@ Depending on the preferences, may create an output similar to:
         <p> This is a sample showing how this works </p>
     </div>
 ```
-
-## 3. Creating the configuration files
 ___
+## 3. Creating the configuration files
+
 Once the template file is created, there must be the defined strings to replace each variable of the template. These strings must be inside the '/config' folder. Inside there must be a folder with the same name of the template file (fe: If the template file is called 'template1.tpl', inside the '/config' folder must be a directory called 'template1'). For each template configuration folder, there must be 2 different directories inside, called 'langs' and 'vars': 
 * All the language translation strings will be inside the 'langs' folder, written in one file for each language (fe: If you want an English and Spanish translation of the template, there must be the 'en.php' and 'es.php' files inside the 'langs' folder). For each variable defined inside the template file there must be a string to replace it, if not the variable will show an empty space in the final result.
 
@@ -53,9 +53,9 @@ config
          ├── color2.php
          └── color3.php
 ```
-
-## 4. Running the script
 ___
+## 4. Running the script
+
 Once the template file and the configuration files are correctly created, just run the script (`$ php generateTpl.php`), and it will create the /dist directory by itself, containing the final customized HTML files, similar to this:
 ```
 dist
@@ -70,9 +70,9 @@ dist
 ```
 
 You can see a sample template, with a sample configuration files showing how to use the twig syntax and how to format the configuration files.
-
-## 5. Troubleshooting
 ___
+## 5. Troubleshooting
+
 The script outputs not only every made step, but and also every error found in the directory configuration.
 1. If there are problems with the 'vendor' folder, make sure that the twig templates support is succesfully installed, or run `$ composer require twig/twig` in the command line to install it. It will create a '/vendor' folder and the 'autoload.php' within it.
 
