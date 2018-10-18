@@ -1,6 +1,7 @@
 # Mosaico Templating Tool
 
-This script is used in order to automate the customization of some language translations and style variables of a template. Let's take a look at an example: 
+This script is used in order to automate the customization of some language translations and style variables of a template. Let's take a look at an example.
+
 Scenario: Start with one HTML mailing template, with the objective of translating it into 3 different languages while simultaneously changing some branding - a color - so it can be used on different sites with different themes. 
 
 You create 
@@ -40,17 +41,18 @@ depending on preferences, may create as one of its outputs (for language en and 
     </div>
 ```
 
-NB: In real life instead of our sample, the 'Dear' and 'Sincerely' would also be translated strings in the language files. In the sample, the name of person signing the letter is 'John Doe' in English and 'Juan Doe' in both Catalan and Spanish. All the templates produced will have a token for the addressee that will be replaced by CiviCRM as it processes the output template for each recipient of a mailing.
+NB: In real life instead of our sample, the 'Dear' and 'Sincerely' would also be translated strings in the language files. In the sample, the name of person signing the letter is 'John Doe' in English and 'Juan Doe' in both Catalan and Spanish. All the templates produced will have a CiviCRM token for the display name of the addressee. CiviCRM will replace this {contact.display_name} token as it processes the output template for each recipient of a mailing.
+
 ___
 ## 3. Creating the configuration files
 
-For each variable in your created template file, there must be defined strings to replace it. For convenience and clarity, variables that have different values based on the language are put in files under a /langs subdirectory, while variables that are not language dependent are put in files under a /vars subdirectory. Running the script will substitute the strings as appropriate into the template, creating a various templates suitable for use in Mosaico. We recommend providing substitution values for a Twig variable either in the /config/langs files or in the /config/vars files, but not both.
+For each variable in your created template file, there must be defined strings to replace it. For convenience and clarity, variables that have different values based on the language are put in files under a /langs subdirectory, while variables that are not language dependent are put in files under a /vars subdirectory. Running the script will substitute the strings as appropriate into the template, creating various templates suitable for use in Mosaico. We recommend providing substitution values for a Twig variable either in the /config/langs files or in the /config/vars files, but not both.
 
 These strings are put inside the '/config' folder. Under the config folder there must be a subfolder with the same name as the template file (eg: If the template file is '/templates/template1.tpl', then inside the '/config' folder there has to be a directory called 'template1'). For each template configuration folder, there must be 2 different subdirectories inside the matching config folder: 'langs' and 'vars'. 
 
 * All the language translation strings will be inside the 'langs' folder, written in one file for each language (eg: If you want an English and Spanish translation of the template, there must be the 'en.php' and 'es.php' files inside the 'langs' folder). For each variable defined inside the template file there must be a string to replace it in each of the language files. If not, the variable will show an empty space in the final result.
 
-* All the style customization strings will be inside the 'vars' folder, written in one file for each result of your preference. For example, if you want 3 different results based on 3 different colors, there must be three files, for example 'blue.php', 'green.php' and the 'red.php' files inside the 'vars' folder. Again, for each variable defined inside the template file that is having replacement values provided by /vars files there must be a string to replace it in the vars files or an empty space will show in the final result. 
+* All the style customization strings will be inside the 'vars' folder, written in one file for each result of your preference. For example, if you want 3 different results based on 3 different colors, there must be three files inside the 'vars' folder, perhaps 'blue.php', 'green.php' and 'red.php'. Again, for each variable defined inside the template file that is being replaced using values provided by /vars files, there must be a string to replace it in each vars file or an empty space will show in the final result. 
 
 * Note that it is possible to specify all or a subset of languages be rendered for a specific value of a vars variable. Inside the main array in the /vars files, there is a subarray called 'langs'. If it's empty, the script will create all the different results according to the languages inside the '/langs' folder by default. You can choose fewer languages if desired by adding items at the array, as follows (this excludes 'ca' language from being rendered for this option): 
 ```
@@ -60,7 +62,7 @@ These strings are put inside the '/config' folder. Under the config folder there
     ),
 ...
 ```
-The items inside the array must exists in the /'langs' directory, if not, it will not create it. (In other words, if you add the item 'en' to the array, there must be a file inside '/config/langs' called 'en.php')
+The items inside the array must exist in the /'langs' directory, if not, it will not create it. (In other words, if you add the item 'en' to the array, there must be a file inside '/config/langs' called 'en.php')
 
 The sample provided with the tool displays the following structure as described above:
 
@@ -104,13 +106,13 @@ ___
 
 The script outputs not only every made step, but and also every error found in the directory configuration.
 
-1. If there are problems with the 'vendor' folder, make sure that the twig templates support is succesfully installed, or run `$ composer require twig/twig` in the command line to install it. It will create a '/vendor' folder and the 'autoload.php' within it.
+1. If there are problems with the 'vendor' folder, make sure that the twig templates support is succesfully installed. If necessary run `$ composer require twig/twig` in the command line to install it. It will create a '/vendor' folder and the 'autoload.php' within it.
 
-2. If the issue is related to the configuration files or folders, make sure that you have followed these steps. Be careful with the names of the templates and the config folder names. 
+2. If the issue is related to the configuration files or folders, make sure that you have followed the instructions above. Be especially careful with the names of the templates and the config folder names. 
     > Section 3: Creating the configuration files:
     >  "... If the template file is called 'template1.tpl', inside the '/config' folder must be a directory called 'template1'..."
 
     > Section 3: Creating the configuration files:
     >  "... If you add the item 'en' to the array, there must be a file inside '/config/langs' called 'en.php')
 
-Anyways, the script will oputput some hints if something is not working properly.
+Anyways, the script will output some hints if something is not working properly.
