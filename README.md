@@ -120,9 +120,9 @@ Anyways, the script will output some hints if something is not working properly.
 ___
 ## Credits
 
-Mario Recamales @MarioClot
+Mario Recamales [@MarioClot](https://github.com/MarioClot)
 
-Francesc Bassas i Bullich @francescbassas
+Francesc Bassas i Bullich [@francescbassas](https://github.com/francescbassas)
 
 ### Contributors
-Joe Murray @JoeMurray
+Joe Murray [@JoeMurray](https://github.com/JoeMurray)
