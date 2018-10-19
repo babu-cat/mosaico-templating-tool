@@ -116,3 +116,12 @@ The script outputs not only every made step, but and also every error found in t
     >  "... If you add the item 'en' to the array, there must be a file inside '/config/langs' called 'en.php')
 
 Anyways, the script will output some hints if something is not working properly.
+
+___
+## Credits
+
+Mario Recamales @MarioClot
+Francesc Bassas i Bullich @francescbassas
+
+### Contributors
+Joe Murray @JoeMurray
