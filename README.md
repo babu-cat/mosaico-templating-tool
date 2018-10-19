@@ -41,7 +41,7 @@ depending on preferences, may create as one of its outputs (for language en and 
     </div>
 ```
 
-NB: In real life instead of our sample, the 'Dear' and 'Sincerely' would also be translated strings in the language files. In the sample, the name of person signing the letter is 'John Doe' in English and 'Juan Doe' in both Catalan and Spanish. All the templates produced will have a CiviCRM token for the display name of the addressee. CiviCRM will replace this {contact.display_name} token as it processes the output template for each recipient of a mailing.
+NB: In real life instead of our sample, the 'Dear' and 'Sincerely' would also be translated strings in the language files. In the sample, the name of person signing the letter is 'John Doe' in English, 'Juan Doe' in Spanish and 'Joan Doe' in Catalan. All the templates produced will have a CiviCRM token for the display name of the addressee. CiviCRM will replace this {contact.display_name} token as it processes the output template for each recipient of a mailing.
 
 ___
 ## 3. Creating the configuration files
