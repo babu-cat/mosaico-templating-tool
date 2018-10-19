@@ -1,7 +1,7 @@
 <?php
 
 return array(
-'name' => 'John Doe',
+'name' => 'Juan García',
 'text' => 'Esto es un ejemplo'
 );
 
