@@ -89,14 +89,14 @@ Once the template file and the configuration files are correctly created, just r
 dist
   └── sample
       ├── blue
-      │    └── sample-en-blue.html
+      │    └── sample-blue-en.html
       ├── green
-      │    ├── sample-ca-green.html
-      │    ├── sample-en-green.html
-      │    └── sample-es-green.html
+      │    ├── sample-green-ca.html
+      │    ├── sample-green-en.html
+      │    └── sample-green-es.html
       └── red
-           ├── sample-ca-red.html
-           └── sample-en-red.html
+           ├── sample-red-ca.html
+           └── sample-red-en.html
 ```
 
 Feel free to run the tool on the sample template in order to see the output. The sample configuration files illustrate how to use twig's syntax and how to format the configuration files.
