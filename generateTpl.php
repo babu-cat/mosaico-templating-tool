@@ -123,7 +123,7 @@ else {
                                   if(file_exists($language)){
                                       $PATH_TO_FILE = $dist_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).DIRECTORY_SEPARATOR.pathinfo($var_file,PATHINFO_FILENAME);
                                       $file_extension = ($htmml == 1) ? 'htmml' : 'html';
-                                      $FINAL_FILENAME = pathinfo($tmpl_file,PATHINFO_FILENAME).'-'.pathinfo($language,PATHINFO_FILENAME).'-'.pathinfo($var_file,PATHINFO_FILENAME). '.' . $file_extension;
+                                      $FINAL_FILENAME = pathinfo($tmpl_file,PATHINFO_FILENAME).'-'.pathinfo($var_file,PATHINFO_FILENAME).'-'.pathinfo($language,PATHINFO_FILENAME). '.' . $file_extension;
                                       $lang_strs = include $language; // array with the language strings
                                       $custom_strs = getSubArrayLangs($var_file,'vars'); // array with the customization strings
                                       $array_total_variables = array_merge($lang_strs,$custom_strs); // array with both language and customization strings
