@@ -130,6 +130,7 @@ Anyways, the script will output some hints if something is not working properly.
 ### 1.1
 
 - Add HTMML compatibility
+- Switch configuration and language order on generated templates filename
 ___
 ## Credits
 
