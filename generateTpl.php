@@ -114,23 +114,35 @@ else {
                                   $array_vars_langs = array_map("formatSubArrayLangs",$array_lang_files); // calls the formatSubArrayLangs() function for each array item
                               }
 
-                              checkDirectories($dist_dir,$tmpl_file,$var_file);
+                              if(!file_exists($dist_dir)){
+                                  createDir($dist_dir);
+                              }
+
                               foreach ($array_vars_langs as $language){ // for each language found in congfiguration files
 
                                   /*
                                    * If exists the file 'config/[template name]/langs/[language].php'
                                    */
                                   if(file_exists($language)){
-                                      $PATH_TO_FILE = $dist_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).DIRECTORY_SEPARATOR.pathinfo($var_file,PATHINFO_FILENAME);
-                                      $file_extension = ($htmml == 1) ? 'htmml' : 'html';
-                                      $FINAL_FILENAME = pathinfo($tmpl_file,PATHINFO_FILENAME).'-'.pathinfo($var_file,PATHINFO_FILENAME).'-'.pathinfo($language,PATHINFO_FILENAME). '.' . $file_extension;
-                                      $lang_strs = include $language; // array with the language strings
-                                      $custom_strs = getSubArrayLangs($var_file,'vars'); // array with the customization strings
-                                      $array_total_variables = array_merge($lang_strs,$custom_strs); // array with both language and customization strings
-                                      /*
-                                       * Creates the file in '/dist/[template name]/[variable]/[template name]-[language]-[variable].html'
-                                       */
-                                      file_put_contents($PATH_TO_FILE.DIRECTORY_SEPARATOR.$FINAL_FILENAME,$template->render($array_total_variables));
+                                    $template_prefix = 'template-';
+                                    $templateDirName = pathinfo($tmpl_file,PATHINFO_FILENAME);
+
+                                    if (substr($templateDirName, 0, strlen($template_prefix)) == $template_prefix) {
+                                        $templateDirName = substr($templateDirName, strlen($template_prefix));
+                                    }
+                                    $PATH_TO_FILE = $dist_dir . DIRECTORY_SEPARATOR . $templateDirName .'-'. pathinfo($var_file,PATHINFO_FILENAME).'-'.pathinfo($language,PATHINFO_FILENAME);
+                                    if(!file_exists($PATH_TO_FILE)){
+                                        createDir($PATH_TO_FILE);
+                                    }
+                                    $file_extension = ($htmml == 1) ? 'htmml' : 'html';
+                                    $FINAL_FILENAME = pathinfo($tmpl_file,PATHINFO_FILENAME).'-'.pathinfo($var_file,PATHINFO_FILENAME).'-'.pathinfo($language,PATHINFO_FILENAME). '.' . $file_extension;
+                                    $lang_strs = include $language; // array with the language strings
+                                    $custom_strs = getSubArrayLangs($var_file,'vars'); // array with the customization strings
+                                    $array_total_variables = array_merge($lang_strs,$custom_strs); // array with both language and customization strings
+                                    /*
+                                     * Creates the file in '/dist/[template name]/[variable]/[template name]-[language]-[variable].html'
+                                     */
+                                    file_put_contents($PATH_TO_FILE.DIRECTORY_SEPARATOR.$FINAL_FILENAME,$template->render($array_total_variables));
                                   }else{
                                       echo "The configuration file ".$language.' does not exist in the '.DIRECTORY_SEPARATOR.$config_dir.' directory'.PHP_EOL;
                                   }
@@ -183,26 +195,6 @@ function getDirContents($dir, &$results = array()){
 function createDir($dir){
     echo 'Creating directory '.$dir.'...'.PHP_EOL;
     mkdir($dir,0777);
-}
-
-/**
- * Checks if all the directories inside /dist are created, and if not
- * creates all of them.
- *
- * @param   string $dist_dir the name of the /dist directory
- * @param   string $tmpl_file the name of the current template file
- * @param   string $var_file the name current variables file
- */
-function checkDirectories($dist_dir,$tmpl_file,$var_file){
-    if(!file_exists($dist_dir)){
-        createDir($dist_dir);
-    }
-    if(!file_exists($dist_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME))){
-        createDir($dist_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME));
-    }
-    if(!file_exists($dist_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).DIRECTORY_SEPARATOR.pathinfo($var_file,PATHINFO_FILENAME))){
-        createDir($dist_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).DIRECTORY_SEPARATOR.pathinfo($var_file,PATHINFO_FILENAME));
-    }
 }
 
 /**

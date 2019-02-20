@@ -68,7 +68,7 @@ The sample provided with the tool displays the following structure as described 
 
 ```
 config
-  └── sample
+  └── template-sample
      ├── langs
      │   ├── ca.php
      │   ├── en.php
@@ -78,7 +78,7 @@ config
          ├── green.php
          └── red.php
 templates
-  └── sample.tpl
+  └── template-sample.tpl
 
 ```
 ___
@@ -87,16 +87,18 @@ ___
 Once the template file and the configuration files are correctly created, just run the script (`$ php generateTpl.php`), and it will create the /dist directory by itself, containing the final customized HTML files, similar to this:
 ```
 dist
-  └── sample
-      ├── blue
-      │    └── sample-blue-en.html
-      ├── green
-      │    ├── sample-green-ca.html
-      │    ├── sample-green-en.html
-      │    └── sample-green-es.html
-      └── red
-           ├── sample-red-ca.html
-           └── sample-red-en.html
+  └── sample-blue-en
+  │    └── template-sample-blue-en.html
+  ├── sample-green-ca
+  │    └── template-sample-green-ca.html
+  ├── sample-green-en
+  │    └── template-sample-green-en.html
+  ├── sample-green-es
+  │    └── template-sample-green-es.html
+  ├── sample-red-ca
+  │    └── template-sample-red-ca.html
+  └── sample-red-en
+       └── template-sample-red-en.html
 ```
 
 Feel free to run the tool on the sample template in order to see the output. The sample configuration files illustrate how to use twig's syntax and how to format the configuration files.

@@ -1,8 +1,8 @@
 config/*
-!config/sample/
+!config/template-sample/
 
 dist/*
 
 templates/*
-!templates/sample.tpl
+!templates/template-sample.tpl
 
