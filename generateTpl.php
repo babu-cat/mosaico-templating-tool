@@ -66,7 +66,7 @@ else {
               exit();
           }else{
               $loader = new Twig_Loader_Filesystem($tmpl_dir);
-              $twig = new Twig_Environment($loader, array('debug' => true,));
+              $twig = new Twig_Environment($loader, array('debug' => true));
               foreach($array_templates as $tmpl_file){
 
                   /*
@@ -118,6 +118,8 @@ else {
                                   createDir($dist_dir);
                               }
 
+                              $custom_strs = getSubArrayLangs($var_file,'vars'); // array with the customization strings
+
                               foreach ($array_vars_langs as $language){ // for each language found in congfiguration files
 
                                   /*
@@ -137,12 +139,14 @@ else {
                                     $file_extension = ($htmml == 1) ? 'htmml' : 'html';
                                     $FINAL_FILENAME = pathinfo($tmpl_file,PATHINFO_FILENAME).'-'.pathinfo($var_file,PATHINFO_FILENAME).'-'.pathinfo($language,PATHINFO_FILENAME). '.' . $file_extension;
                                     $lang_strs = include $language; // array with the language strings
-                                    $custom_strs = getSubArrayLangs($var_file,'vars'); // array with the customization strings
+
                                     $array_total_variables = array_merge($lang_strs,$custom_strs); // array with both language and customization strings
                                     /*
                                      * Creates the file in '/dist/[template name]/[variable]/[template name]-[language]-[variable].html'
                                      */
-                                    file_put_contents($PATH_TO_FILE.DIRECTORY_SEPARATOR.$FINAL_FILENAME,$template->render($array_total_variables));
+                                     $template2string = $template->render($array_total_variables);
+                                     $template2 = $twig->createTemplate($template2string);
+                                    file_put_contents($PATH_TO_FILE.DIRECTORY_SEPARATOR.$FINAL_FILENAME,$template2->render($lang_strs));
                                   }else{
                                       echo "The configuration file ".$language.' does not exist in the '.DIRECTORY_SEPARATOR.$config_dir.' directory'.PHP_EOL;
                                   }
