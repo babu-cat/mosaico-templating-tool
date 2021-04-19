@@ -49,25 +49,26 @@ else {
   /*
    * If the vendor/autoload.php file exists
    */
-  if(file_exists($autoload_dir)){
+  if ( file_exists($autoload_dir) ) {
       require_once $autoload_dir;
 
       /*
        * If the templates directory exists
        */
-      if(file_exists($tmpl_dir)){
-          $array_templates = getDirContents($tmpl_dir,$array_templates);
+      if ( file_exists($tmpl_dir) ) {
+          $array_templates = getDirContents($tmpl_dir,$array_templates,false);
 
           /*
            * If the templates directory is empty
            */
-          if(empty($array_templates)){
+          if ( empty($array_templates) ) {
               echo 'The templates directory ('.$tmpl_dir.') is empty.'.PHP_EOL;
               exit();
-          }else{
+          }
+          else {
               $loader = new Twig_Loader_Filesystem($tmpl_dir);
               $twig = new Twig_Environment($loader, array('debug' => true));
-              foreach($array_templates as $tmpl_file){
+              foreach ($array_templates as $tmpl_file) {
 
                   /*
                    * Checks that for each template file there is a '/config/[something]' directory with THE SAME name
@@ -76,7 +77,7 @@ else {
                    *   a '/sample_file' directory, containing the configuration files life styles or languages,
                    *   like '/config/sample_file/[configuration items]'
                    */
-                  if(file_exists($config_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME))){ // Ex: config/versafix-1
+                  if ( file_exists($config_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME)) ) { // Ex: config/versafix-1
 
                       /*
                        * Arrays where the configuration variables are stored
@@ -90,9 +91,10 @@ else {
                       /*
                        * If there are no configuration files for the current template
                        */
-                      if(empty($array_lang_files)||empty($array_vars_files)){
+                      if ( empty($array_lang_files)||empty($array_vars_files) ) {
                           echo 'There are missing configuration files in '.$config_dir.' directory'.PHP_EOL;
-                      }else{
+                      }
+                      else {
                           if ($htmml) {
                             $lexer = new Twig_Lexer($twig, array(
                                       'tag_comment' => array('[#', '#]'),
@@ -101,31 +103,32 @@ else {
                             $twig->setLexer($lexer);
                           }
                           $template = $twig->load(pathinfo($tmpl_file,PATHINFO_BASENAME));
-                          foreach ($array_vars_files as $var_file){ // for each file inside /vars
+                          foreach ($array_vars_files as $var_file) { // for each file inside /vars
 
                               /*
                                * If exists the subarray 'langs' and it's not empty in the variables file for the current template
                                */
-                              if(getSubArrayLangs($var_file,'langs')){
+                              if ( getSubArrayLangs($var_file,'langs') ) {
                                   $array_vars_langs = getSubArrayLangs($var_file,'langs'); //return the found strings
                                   $array_vars_langs = preg_filter('/^/',$config_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).'/langs/',$array_vars_langs);
                                   $array_vars_langs = preg_filter('/$/','.php',$array_vars_langs); // format the strings in order to get a /config/[template]/langs/[string].php
-                              }else{
+                              }
+                              else {
                                   $array_vars_langs = array_map("formatSubArrayLangs",$array_lang_files); // calls the formatSubArrayLangs() function for each array item
                               }
 
-                              if(!file_exists($dist_dir)){
+                              if ( !file_exists($dist_dir) ) {
                                   createDir($dist_dir);
                               }
 
                               $custom_strs = getSubArrayLangs($var_file,'vars'); // array with the customization strings
 
-                              foreach ($array_vars_langs as $language){ // for each language found in congfiguration files
+                              foreach ($array_vars_langs as $language) { // for each language found in congfiguration files
 
                                   /*
                                    * If exists the file 'config/[template name]/langs/[language].php'
                                    */
-                                  if(file_exists($language)){
+                                  if ( file_exists($language) ) {
                                     $template_prefix = 'template-';
                                     $templateDirName = pathinfo($tmpl_file,PATHINFO_FILENAME);
 
@@ -133,7 +136,7 @@ else {
                                         $templateDirName = substr($templateDirName, strlen($template_prefix));
                                     }
                                     $PATH_TO_FILE = $dist_dir . DIRECTORY_SEPARATOR . $templateDirName .'-'. pathinfo($var_file,PATHINFO_FILENAME).'-'.pathinfo($language,PATHINFO_FILENAME);
-                                    if(!file_exists($PATH_TO_FILE)){
+                                    if ( !file_exists($PATH_TO_FILE) ) {
                                         createDir($PATH_TO_FILE);
                                     }
                                     $file_extension = ($htmml == 1) ? 'htmml' : 'html';
@@ -147,22 +150,26 @@ else {
                                      $template2string = $template->render($array_total_variables);
                                      $template2 = $twig->createTemplate($template2string);
                                     file_put_contents($PATH_TO_FILE.DIRECTORY_SEPARATOR.$FINAL_FILENAME,$template2->render($lang_strs));
-                                  }else{
+                                  }
+                                  else {
                                       echo "The configuration file ".$language.' does not exist in the '.DIRECTORY_SEPARATOR.$config_dir.' directory'.PHP_EOL;
                                   }
                               }
                           }
                       }
-                  }else{
+                  }
+                  else {
                       echo 'The configuration directory '.$config_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).' does not exist. Omitting.'.PHP_EOL;
                   }
               }
           }
-      }else{
+      }
+      else {
           echo 'Directory '.$tmpl_dir.' does not exist.'.PHP_EOL;
           exit();
       }
-  }else{
+  }
+  else {
       echo 'File '.$autoload_dir.' does not exist. Try running \'composer require twig/twig\' in your project folder.'.PHP_EOL;
   }
 }
@@ -177,14 +184,15 @@ else {
  * @param    array $results the array where all the filenames will be stored
  * @return   array $results the array where all the filenames are stored
  */
-function getDirContents($dir, &$results = array()){
+function getDirContents($dir, &$results = array(), $recursive = true){
     $files = scandir($dir);
 
-    foreach($files as $key => $value){
+    foreach ( $files as $key => $value ) {
         $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
-        if(!is_dir($path)) {
+        if ( !is_dir($path) ) {
             $results[] = $path;
-        } else if($value != "." && $value != "..") {
+        }
+        else if ($value != "." && $value != ".." && $recursive) {
             getDirContents($path, $results);
         }
     }
@@ -212,7 +220,7 @@ function createDir($dir){
  */
 function getConfigFileNames($tmpl_file,$dir_name){
     global $config_dir;
-    $array = getDirContents($config_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).$dir_name,$array);
+    $array = getDirContents($config_dir.DIRECTORY_SEPARATOR.pathinfo($tmpl_file,PATHINFO_FILENAME).$dir_name,$array,false);
     return $array;
 }
 
@@ -229,9 +237,10 @@ function getSubArrayLangs($var_file,$sel_array){
     $array_langs_str = array();
     $temp_array = include $var_file;
     $array_langs_str = $temp_array[$sel_array];
-    if(!empty($array_langs_str)){
+    if ( !empty($array_langs_str) ){
         return $array_langs_str;
-    }else{
+    }
+    else {
         return false;
     }
 }
